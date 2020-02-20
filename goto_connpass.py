@@ -1,16 +1,20 @@
 import asyncio
+import config
 from pyppeteer import launch
 
 async def main():
     browser = await launch()
     page = await browser.newPage()
     await page.goto('https://connpass.com/dashboard/')
-    await page.screenshot({'path': 'scraping-1.png'})
+    await page.screenshot({'path': 'images/scraping-1.png'})
     await page.click('.btn.btn_login.github')
-    await page.screenshot({'path': 'scraping-2.png'})
-    print(vars(page))
-	#await page.type(LOGIN_USER_SELECTOR, LOGIN_USER);
-    #await page.type(LOGIN_PASS_SELECTOR, LOGIN_PASS);
+    await page.screenshot({'path': 'images/scraping-2.png'})
+    content = await page.evaluate('document.body.innerHTML', force_expr=True)
+    await page.type('#login_field', config.GITHUB_USERNAME);
+    await page.type('#password', config.GITHUB_PASSWORD);
+    await page.click("input[name='commit']")
+    await page.waitForSelector('.round_box_title');
+    await page.screenshot({'path': 'images/scraping-3.png'})
     await browser.close()
 
 asyncio.get_event_loop().run_until_complete(main())
