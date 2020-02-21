@@ -2,3 +2,4 @@ config.py
 twienv/
 __pycache__
 images/
+secret/

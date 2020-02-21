@@ -15,6 +15,8 @@ async def main():
     await page.click("input[name='commit']")
     await page.waitForSelector('.round_box_title');
     await page.screenshot({'path': 'images/scraping-3.png'})
+    await page.goto('https://connpass.com/event/164668/stats/',waitUntil='networkidle0')
+    await page.screenshot({'path': 'images/scraping-4.png'})
     await browser.close()
 
 asyncio.get_event_loop().run_until_complete(main())
