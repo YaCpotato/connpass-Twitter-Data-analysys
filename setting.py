@@ -10,7 +10,7 @@ password = config.MYSQL_PASSWORD
 host = "localhost"
 port = "3306"
 database = config.MYSQL_DATABASE_NAME
-charset_type = "utf8"
+charset_type = "utf8mb4"
 db_url = f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}?charset={charset_type}"
 
 # DB接続するためのEngineインスタンス
