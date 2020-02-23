@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
-import migrate
-from migrate import Tweet
+import models
+from models import Tweet
 from setting import session
 from datetime import datetime
 import csv
