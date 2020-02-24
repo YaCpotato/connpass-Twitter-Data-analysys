@@ -24,35 +24,62 @@ def generate_table(dataframe, max_rows=10):
         ]) for i in range(len(dataframe))]
     )
 
-# スペルミス等しないように定型文をdefineする
-FormatDay = "%Y/%m/%d-"
-FormatTime = "%H:%M:%S"
-
 # 使いまわされそうなものは関数にする
 def is_within_time(time,start,end):
-    time = datetime.strftime(time,'%Y-%m-%d %H:%M')
+    time = datetime.strftime(time,'%Y-%m-%d')
     # FormatTimeだけだと年月が1990-1-1になるので現実の年月を使えるようにする
-    date = datetime.strptime(time,'%Y-%m-%d %H:%M')
-    start_time = datetime.strptime(start,'%Y-%m-%d %H:%M')
-    end_time = datetime.strptime(end,'%Y-%m-%d %H:%M')
-    return start_time < date < end_time
+    date = datetime.strptime(time,'%Y-%m-%d')
+    return start < date < end
 
-impressions = []
-date = []
-ml_impressions = []
-ml_date = []
-ml_retweet = []
-ml_content = []
-ml_like = []
+def shape_tweets(tweets):
+    result = []
+    total_impressions = 0
+    total_retweets = 0
+    total_likes = 0
+    total_tag_tweets = 0
+    detail = []
+    tweet_date = ''
+    for tweet in tweets:
+        if '#MLbeginners' in tweet.content and is_within_time(tweet.date,datetime(2020,1,27),datetime(2020,2,26)): #1'2019-10-02 00:00','2019-10-27 13:00' #3 '2019-12-14 16:30','2020-01-18 12:00'
+            total_impressions += tweet.inpression
+            total_retweets += tweet.retweet
+            total_likes += tweet.like
+            total_tag_tweets += 1
+            detail.append(tweet)
+        
+            # 最初、もしくは前の日付と違ったら、tweet_dateの更新を行い、描画用オブジェクトにappend。
+            if tweet_date == '' or datetime.strptime(tweet_date,'%Y-%m-%d') != datetime.strptime(tweet.date,'%Y-%m-%d'):
+                #tweet_date = datetime.strptime(tweet.date,'%Y-%m-%d')
+                result.append({
+                    "date" : tweet.date,
+                    "total_impressions" : total_impressions,
+                    "total_retweets" : total_retweets,
+                    "total_impressions" : total_impressions,
+                    "total_likes" : total_likes,
+                    "detail" : detail
+                })
+                total_impressions = 0
+                total_retweets = 0
+                total_likes = 0
+                total_tag_tweets = 0
+                detail = []
+        
+    return result
+
 tweets = session.query(Tweet).distinct(Tweet.date).all()
 
-for tweet in tweets:
-    if '#MLbeginners' in tweet.content and is_within_time(tweet.date,'2019-10-02 00:00','2019-10-27 13:00'):
-            ml_content.append(tweet.content)
-            ml_date.append(tweet.date)
-            ml_impressions.append(tweet.inpression)
-            ml_retweet.append(tweet.retweet)
-            ml_like.append(tweet.like)
+shaped_tweets = shape_tweets(tweets)
+
+ml_date = []
+ml_impression = []
+ml_retweet = []
+ml_like = []
+for twi in shaped_tweets:
+    ml_date.append(twi["date"])
+    ml_impression.append(twi["total_impressions"])
+    ml_retweet.append(twi["total_retweets"])
+    ml_like.append(twi["total_likes"])
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -62,53 +89,20 @@ app.layout = html.Div(children=[
     html.H1(children='Hello Dash'),
 
     html.Div(children=[
-        html.Div(style={'max-height':'50vh','overflow-y':'scroll'},children=[
-            str(len(tweets))+'のうち、'+str(len(ml_impressions))+'件が#MLbeginners関連のツイートでした',
-                generate_table(pd.DataFrame({
-                                                'content' : ml_content,
-                                                'date' : ml_date,
-                                                'impression' : ml_impressions,
-                                                'retweet' : ml_retweet,
-                                                'like' : ml_like
-                                            })
-                )
+        html.Div(children=[
+            dcc.Graph(
+                id='example-graph-1',
+                figure={
+                    'data': [
+                        {'x': ml_date, 'y': ml_impression, 'type': 'bar', 'name': 'SF'},
+                    ],
+                    'layout': {
+                        'title': 'インプレッション数'
+                    }
+                }
+            )
         ]
-    ),
-    html.Div(children=[
-    dcc.Graph(
-        id='example-graph-1',
-        figure={
-            'data': [
-                {'x': ml_date, 'y': ml_impressions, 'type': 'bar', 'name': 'SF'},
-            ],
-            'layout': {
-                'title': 'インプレッション数'
-            }
-        }
-    ),
-    dcc.Graph(
-        id='example-graph-2',
-        figure={
-            'data': [
-                {'x': ml_date, 'y': ml_retweet, 'type': 'line', 'name': 'SF'},
-            ],
-            'layout': {
-                'title': 'リツイート数'
-            }
-        }
-    ),
-    dcc.Graph(
-        id='example-graph-3',
-        figure={
-            'data': [
-                {'x': ml_date, 'y': ml_like, 'type': 'line', 'name': 'SF'},
-            ],
-            'layout': {
-                'title': 'いいね数'
-            }
-        }
     )
-    ])
 ])])
 
 
