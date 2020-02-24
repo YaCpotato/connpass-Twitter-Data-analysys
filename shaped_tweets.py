@@ -15,4 +15,4 @@ if __name__ == '__main__':
     result = shape_tweets(tweets)
     
     for i in result:
-        print(i.date)
+        print(i.date + str(i.inpression))
