@@ -26,7 +26,7 @@ def generate_table(dataframe, max_rows=10):
 
 # 使いまわされそうなものは関数にする
 def is_within_time(time,start,end):
-    time = datetime.strftime(time,'%Y-%m-%d')
+    #time = datetime.strftime(time,'%Y-%m-%d')
     # FormatTimeだけだと年月が1990-1-1になるので現実の年月を使えるようにする
     date = datetime.strptime(time,'%Y-%m-%d')
     return start < date < end
@@ -38,8 +38,9 @@ def shape_tweets(tweets):
     total_likes = 0
     total_tag_tweets = 0
     detail = []
-    tweet_date = ''
+    tmp_date = tweets[0].date
     for tweet in tweets:
+        tweet.date = datetime.strftime(tweet.date,'%Y-%m-%d')
         if '#MLbeginners' in tweet.content and is_within_time(tweet.date,datetime(2020,1,27),datetime(2020,2,26)): #1'2019-10-02 00:00','2019-10-27 13:00' #3 '2019-12-14 16:30','2020-01-18 12:00'
             total_impressions += tweet.inpression
             total_retweets += tweet.retweet
@@ -48,8 +49,7 @@ def shape_tweets(tweets):
             detail.append(tweet)
         
             # 最初、もしくは前の日付と違ったら、tweet_dateの更新を行い、描画用オブジェクトにappend。
-            if tweet_date == '' or datetime.strptime(tweet_date,'%Y-%m-%d') != datetime.strptime(tweet.date,'%Y-%m-%d'):
-                #tweet_date = datetime.strptime(tweet.date,'%Y-%m-%d')
+            if tweet.date != tmp_date:                #tweet_date = datetime.strptime(tweet.date,'%Y-%m-%d')
                 result.append({
                     "date" : tweet.date,
                     "total_impressions" : total_impressions,
