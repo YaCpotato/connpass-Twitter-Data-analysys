@@ -24,6 +24,19 @@ def generate_table(dataframe, max_rows=10):
         ]) for i in range(len(dataframe))]
     )
 
+# スペルミス等しないように定型文をdefineする
+FormatDay = "%Y/%m/%d-"
+FormatTime = "%H:%M:%S"
+
+# 使いまわされそうなものは関数にする
+def is_within_time(time,start,end):
+    time = datetime.strftime(time,'%Y-%m-%d %H:%M')
+    # FormatTimeだけだと年月が1990-1-1になるので現実の年月を使えるようにする
+    date = datetime.strptime(time,'%Y-%m-%d %H:%M')
+    start_time = datetime.strptime(start,'%Y-%m-%d %H:%M')
+    end_time = datetime.strptime(end,'%Y-%m-%d %H:%M')
+    return start_time < date < end_time
+
 impressions = []
 date = []
 ml_impressions = []
@@ -34,12 +47,12 @@ ml_like = []
 tweets = session.query(Tweet).distinct(Tweet.date).all()
 
 for tweet in tweets:
-    if '#MLbeginners' in tweet.content:
-        ml_content.append(tweet.content)
-        ml_date.append(tweet.date)
-        ml_impressions.append(tweet.inpression)
-        ml_retweet.append(tweet.retweet)
-        ml_like.append(tweet.like)
+    if '#MLbeginners' in tweet.content and is_within_time(tweet.date,'2019-10-02 00:00','2019-10-27 13:00'):
+            ml_content.append(tweet.content)
+            ml_date.append(tweet.date)
+            ml_impressions.append(tweet.inpression)
+            ml_retweet.append(tweet.retweet)
+            ml_like.append(tweet.like)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
