@@ -85,8 +85,44 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+events_number = [1,2,3,4]
+subject = ['タグ付きツイート数','インプレッション数','RT数','いいね数']
+
 app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+    html.Div(
+        style={ 'width':'100vw',
+                'minHeight':'15vh',
+                'margin':'0 auto',
+                'text-align':'center'
+                },
+        children=[
+        html.Span(
+            style={'margin':'16px','fontSize':'28px','fontWeight':'bold'},
+            children='Machine Learning for Beginners! Twitter分析ダッシュボード'),
+        ]
+    ),
+    html.Div(
+        style={ 'width':'100vw',
+                'minHeight':'15vh',
+                'margin':'0 auto',
+                'text-align':'left',
+                'display':'flex'
+                },
+        children=[
+        dcc.Dropdown(
+            id='subject',
+            style={'width':'10vw','marginRight':'8px'},
+            options=[{'label': '第'+str(i)+'回', 'value': i} for i in events_number],
+            value=events_number[0]
+        ),
+        dcc.Dropdown(
+                id='event-number',
+                style={'width':'15vw','marginRight':'8px'},
+                options=[{'label': i, 'value': i} for i in subject],
+                value=subject[0]
+            ),
+        ]
+    ),
 
     html.Div(children=[
         html.Div(children=[
@@ -95,15 +131,18 @@ app.layout = html.Div(children=[
                 figure={
                     'data': [
                         {'x': ml_date, 'y': ml_impression, 'type': 'bar', 'name': 'SF'},
-                    ],
+                        ],
                     'layout': {
                         'title': 'インプレッション数'
-                    }
-                }
-            )
-        ]
-    )
-])])
+                        }
+                        }
+                        )
+                    ]
+                )   
+            ]
+        )
+    ]
+)
 
 
 if __name__ == '__main__':
