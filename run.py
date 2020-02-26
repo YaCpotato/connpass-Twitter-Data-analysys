@@ -70,6 +70,6 @@ if __name__ == '__main__':
     AT = config.ACCESS_TOKEN
     ATS = config.ACCESS_TOKEN_SECRET
     twitter = OAuth1Session(CK, CS, AT, ATS)
-    #searchWords()
+    searchWords()
     #myTimeLineTweetsId()
-    getInpressions()
+    #getInpressions()

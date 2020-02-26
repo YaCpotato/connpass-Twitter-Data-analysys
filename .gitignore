@@ -1,5 +1,5 @@
 config.py
-twienv/
+data/
 __pycache__
 images/
 secret/
