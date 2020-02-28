@@ -72,10 +72,10 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.config.suppress_callback_exceptions = True
 events_number = [0,1,2,3]
 events_date = [
-    [2019,10,2,2019,10,27],
-    [2019,11,8,2019,12,4],
-    [2019,12,14,2020,1,18],
-    [2020,1,27,2020,2,26]
+    [2019,10,2,2019,10,28],
+    [2019,11,8,2019,12,5],
+    [2019,12,14,2020,1,19],
+    [2020,1,27,2020,2,27]
 ]
 subject = ['インプレッション数','RT数','いいね数']
 
