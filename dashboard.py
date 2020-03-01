@@ -158,19 +158,24 @@ app.layout = html.Div(children=[
     [Input('subject','value'),Input('event-number','value'),Input('grain','value')])
 def update_state_event(subject,event_number,grain):
 
-    return {
+    traces = []
+    traces.append({
         'current_subject': subject,
         'current_event': event_number,
         'current_grain': grain
+    })
+    
+    return {
+        'data': traces
     }
 
 @app.callback(
     [Output('graph-with-dropdown', 'figure'),Output('tweet-list', 'children')],
     [Input('state-value', 'children')])
 def update_display_event(data):
-    event_number = data['current_event']
-    grain_size = data['current_grain']
-    subject = data['current_subject']
+    event_number = data['data'][0]['current_event']
+    grain_size = data['data'][0]['current_grain']
+    subject = data['data'][0]['current_subject']
 
     tweets = session.query(Tweet.content,Tweet.date,Tweet.inpression,Tweet.retweet,Tweet.like).\
     filter(
