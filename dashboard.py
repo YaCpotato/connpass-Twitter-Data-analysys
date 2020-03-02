@@ -37,23 +37,12 @@ app.layout = html.Div(
         html.Div(
             id='state-value',
             style={'display': 'none'},
-            children=[]),
-        html.Div(
-            style={ 'width':'100vw',
-                    'minHeight':'15vh',
-                    'margin':'0 auto',
-                    'textAlign':'center'
-                    },
-            children=[
-                html.Span(
-                    style={'margin':'16px','fontSize':'28px','fontWeight':'bold'},
-                    children='Machine Learning for Beginners! Twitter分析ダッシュボード'),
-            ]
+            children=[]
         ),
         html.Div(
             style={ 'width':'100vw',
                     'minHeight':'15vh',
-                    'margin':'0 auto',
+                    'margin-top':'20px',
                     'textAlign':'left',
                     'display':'flex'
                     },
