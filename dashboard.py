@@ -14,10 +14,11 @@ import sys
 from matplotlib import pyplot as plt
 import seaborn as sns
 from template.list_table import generate_table
+from template.header import header
 from utils.shape_tweets import by_day,by_tweet
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['style/myboard.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.config.suppress_callback_exceptions = True
@@ -33,6 +34,7 @@ by_tweet_or_date = ['ツイート毎','日付毎']
 
 app.layout = html.Div(
     children=[
+        header(),
         html.Div(
             id='state-value',
             style={'display': 'none'},

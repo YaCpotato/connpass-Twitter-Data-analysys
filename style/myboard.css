@@ -1,0 +1,26 @@
+.header {
+    height:15vh;
+    display: flex;
+    background-color:black;
+}
+
+.iconArea {
+    width: 20px;
+    height: 20px;
+    float:right;
+}
+
+.titleArea span {
+    width:auto;
+    height:auto;
+    font-size:28px;
+    font-weight:bold;
+    color:white;
+    justify-content: center;
+}
+
+.socialArea {
+    width:10vw;
+    height:auto;
+    float: left;
+}
