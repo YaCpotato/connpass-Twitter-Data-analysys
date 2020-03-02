@@ -18,9 +18,8 @@ from template.header import header
 from utils.shape_tweets import by_day,by_tweet
 
 
-external_stylesheets = ['style/myboard.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 app.config.suppress_callback_exceptions = True
 events_number = [0,1,2,3]
 events_date = [
