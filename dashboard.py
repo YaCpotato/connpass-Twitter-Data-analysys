@@ -14,12 +14,12 @@ import sys
 from matplotlib import pyplot as plt
 import seaborn as sns
 from template.list_table import generate_table
+from template.header import header
 from utils.shape_tweets import by_day,by_tweet
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 app.config.suppress_callback_exceptions = True
 events_number = [0,1,2,3]
 events_date = [
@@ -33,26 +33,16 @@ by_tweet_or_date = ['ツイート毎','日付毎']
 
 app.layout = html.Div(
     children=[
+        header(),
         html.Div(
             id='state-value',
             style={'display': 'none'},
-            children=[]),
-        html.Div(
-            style={ 'width':'100vw',
-                    'minHeight':'15vh',
-                    'margin':'0 auto',
-                    'textAlign':'center'
-                    },
-            children=[
-                html.Span(
-                    style={'margin':'16px','fontSize':'28px','fontWeight':'bold'},
-                    children='Machine Learning for Beginners! Twitter分析ダッシュボード'),
-            ]
+            children=[]
         ),
         html.Div(
             style={ 'width':'100vw',
                     'minHeight':'15vh',
-                    'margin':'0 auto',
+                    'margin-top':'20px',
                     'textAlign':'left',
                     'display':'flex'
                     },
