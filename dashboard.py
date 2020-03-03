@@ -18,12 +18,12 @@ from template.list_table import generate_table
 from template.header import header
 from utils.shape_tweets import by_day,by_tweet
 
-external_scripts = [
-    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js',
-]
+# external_scripts = [
+#     'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js',
+# ]
 
 
-app = dash.Dash(__name__,external_scripts=external_scripts)
+app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.config.suppress_callback_exceptions = True
 events_number = [0,1,2,3]
 events_date = [
@@ -35,26 +35,24 @@ events_date = [
 subject = ['インプレッション数','RT数','いいね数']
 by_tweet_or_date = ['ツイート毎','日付毎']
 
-modal = html.Div(
-    [
-        dbc.Button("Open modal", id="open"),
-        dbc.Modal(
-            [
-                dbc.ModalHeader("Header"),
-                dbc.ModalBody("This is the content of the modal"),
-                dbc.ModalFooter(
-                    dbc.Button("Close", id="close", className="ml-auto")
-                ),
-            ],
-            id="modal",
-        ),
-    ]
-)
-
 app.layout = html.Div(
     children=[
-        modal,
         header(),
+        html.Div(
+            [
+                dbc.Button("Open modal", id="open"),
+                dbc.Modal(
+                    [
+                        dbc.ModalHeader("Header"),
+                        dbc.ModalBody("This is the content of the modal"),
+                        dbc.ModalFooter(
+                            dbc.Button("Close", id="close", className="ml-auto")
+                        ),
+                    ],
+                    id="modal",
+                ),
+            ]
+        ),
         html.Div(
             id='state-value',
             style={'display': 'none'},
@@ -63,7 +61,7 @@ app.layout = html.Div(
         html.Div(
             style={ 'width':'100vw',
                     'minHeight':'15vh',
-                    'margin-top':'20px',
+                    'marginTop':'20px',
                     'textAlign':'left',
                     'display':'flex'
                     },
