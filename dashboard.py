@@ -2,7 +2,8 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output, State
 import json
 import pandas as pd
 import models
@@ -17,9 +18,12 @@ from template.list_table import generate_table
 from template.header import header
 from utils.shape_tweets import by_day,by_tweet
 
+external_scripts = [
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js',
+]
 
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__,external_scripts=external_scripts)
 app.config.suppress_callback_exceptions = True
 events_number = [0,1,2,3]
 events_date = [
@@ -31,8 +35,25 @@ events_date = [
 subject = ['インプレッション数','RT数','いいね数']
 by_tweet_or_date = ['ツイート毎','日付毎']
 
+modal = html.Div(
+    [
+        dbc.Button("Open modal", id="open"),
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Header"),
+                dbc.ModalBody("This is the content of the modal"),
+                dbc.ModalFooter(
+                    dbc.Button("Close", id="close", className="ml-auto")
+                ),
+            ],
+            id="modal",
+        ),
+    ]
+)
+
 app.layout = html.Div(
     children=[
+        modal,
         header(),
         html.Div(
             id='state-value',
@@ -90,6 +111,16 @@ app.layout = html.Div(
         )
     ]
 )
+
+@app.callback(
+    Output("modal-xl", "is_open"),
+    [Input("open-xl", "n_clicks"), Input("close-xl", "n_clicks")],
+    [State("modal-xl", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 @app.callback(
     Output('state-value','children'),
