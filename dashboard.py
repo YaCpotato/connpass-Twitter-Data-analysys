@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 from template.list_table import generate_table
 from template.header import header
-from utils.shape_tweets import by_day,by_tweet
+from utils.shape_tweets import by_day
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.config.suppress_callback_exceptions = True
@@ -28,7 +28,6 @@ events_date = [
     [2020,1,27,2020,2,27]
 ]
 subject = ['インプレッション数','RT数','いいね数']
-by_tweet_or_date = ['ツイート毎','日付毎']
 
 app.layout = html.Div(
     children=[
@@ -76,17 +75,6 @@ app.layout = html.Div(
             ]
         ),
         html.Div(
-            style={'display':'flex'},
-            children=[
-                dcc.Dropdown(
-                    id='grain',
-                    style={'width':'10vw','marginRight':'8px'},
-                    options=[{'label': i, 'value': i} for i in by_tweet_or_date],
-                    value=by_tweet_or_date[0]
-                )
-            ]
-        ),
-        html.Div(
             children=[
                 html.Div(
                     children=[
@@ -106,14 +94,13 @@ app.layout = html.Div(
 
 @app.callback(
     Output('state-value','children'),
-    [Input('subject','value'),Input('event-number','value'),Input('grain','value')])
-def update_state_event(subject,event_number,grain):
+    [Input('subject','value'),Input('event-number','value')])
+def update_state_event(subject,event_number):
 
     traces = []
     traces.append({
         'current_subject': subject,
         'current_event': event_number,
-        'current_grain': grain
     })
     
     return {
@@ -125,7 +112,6 @@ def update_state_event(subject,event_number,grain):
     [Input('state-value', 'children')])
 def update_display_event(data):
     event_number = data['data'][0]['current_event']
-    grain_size = data['data'][0]['current_grain']
     subject = data['data'][0]['current_subject']
 
     tweets = session.query(Tweet.content,Tweet.date,Tweet.inpression,Tweet.retweet,Tweet.like).\
@@ -135,10 +121,7 @@ def update_display_event(data):
     ).\
     distinct(Tweet.date).all()
 
-    if grain_size == 'ツイート毎':
-        shaped_tweets = by_tweet(tweets)
-    elif grain_size == '日付毎':
-        shaped_tweets = by_day(tweets)
+    shaped_tweets = by_day(tweets)
 
     ml_date = []
     ml_content = []
