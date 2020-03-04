@@ -18,11 +18,6 @@ from template.list_table import generate_table
 from template.header import header
 from utils.shape_tweets import by_day,by_tweet
 
-# external_scripts = [
-#     'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js',
-# ]
-
-
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.config.suppress_callback_exceptions = True
 events_number = [0,1,2,3]
@@ -92,17 +87,15 @@ app.layout = html.Div(
             ]
         ),
         html.Div(
-            style={'display':'flex'},
             children=[
                 html.Div(
-                    style={'width':'50vw'},
                     children=[
                     dcc.Graph(id='graph-with-dropdown')   
                     ]
                 ),
                 html.Div(
                     id='tweet-list',
-                    style={'width':'50vw','maxHeight':'80vh','overflowY':'scroll'},
+                    style={'maxHeight':'50vh','overflowY':'scroll'},
                     children=[]
                 )
             ]
@@ -110,15 +103,6 @@ app.layout = html.Div(
     ]
 )
 
-@app.callback(
-    Output("modal-xl", "is_open"),
-    [Input("open-xl", "n_clicks"), Input("close-xl", "n_clicks")],
-    [State("modal-xl", "is_open")],
-)
-def toggle_modal(n1, n2, is_open):
-    if n1 or n2:
-        return not is_open
-    return is_open
 
 @app.callback(
     Output('state-value','children'),
@@ -198,6 +182,15 @@ def update_display_event(data):
             title = subject
         )
     },generate_table(tweet_df)
+
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("open", "n_clicks"), Input("close", "n_clicks")],
+    [State("modal", "is_open")])
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 if __name__ == '__main__':
     app.run_server(debug=True)
