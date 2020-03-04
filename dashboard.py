@@ -29,18 +29,48 @@ events_date = [
 ]
 subject = ['インプレッション数','RT数','いいね数']
 
+add_event_name = ''
+
 app.layout = html.Div(
     children=[
         header(),
         html.Div(
             [
-                dbc.Button("Open modal", id="open"),
+                dbc.Button("+ イベントの追加 +", id="open"),
                 dbc.Modal(
                     [
-                        dbc.ModalHeader("Header"),
-                        dbc.ModalBody("This is the content of the modal"),
+                        dbc.ModalHeader("イベントの追加"),
+                        dbc.ModalBody(
+                            children=[
+                                dbc.Form(
+                                [
+                                    dbc.FormGroup(
+                                        [
+                                            dbc.Label("イベント名"),
+                                            dbc.Input(id='event-name', type='text'),
+                                        ],
+                                        className="mr-3",
+                                    ),
+                                    dbc.FormGroup(
+                                        [
+                                            dbc.Label("分析対象の日付範囲"),
+                                            dcc.DatePickerRange(
+                                                id='date-range',
+                                                start_date_placeholder_text="開始日",
+                                                end_date_placeholder_text="終了日"
+                                            )
+                                        ],
+                                        className="mr-3",
+                                    ),
+                                ],
+                            )
+                        ]
+                    ),
                         dbc.ModalFooter(
-                            dbc.Button("Close", id="close", className="ml-auto")
+                            children=[
+                                dbc.Button("Close", id="close", className="ml-auto"),
+                                dbc.Button("登録", id="regist", className="ml-auto")
+                            ]
                         ),
                     ],
                     id="modal",
@@ -90,6 +120,7 @@ app.layout = html.Div(
         )
     ]
 )
+
 
 
 @app.callback(
