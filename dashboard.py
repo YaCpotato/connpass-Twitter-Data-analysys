@@ -32,21 +32,21 @@ subject = ['インプレッション数','RT数','いいね数']
 app.layout = html.Div(
     children=[
         header(),
-        html.Div(
-            [
-                dbc.Button("Open modal", id="open"),
-                dbc.Modal(
-                    [
-                        dbc.ModalHeader("Header"),
-                        dbc.ModalBody("This is the content of the modal"),
-                        dbc.ModalFooter(
-                            dbc.Button("Close", id="close", className="ml-auto")
-                        ),
-                    ],
-                    id="modal",
-                ),
-            ]
-        ),
+        # html.Div(
+        #     [
+        #         dbc.Button("Open modal", id="open"),
+        #         dbc.Modal(
+        #             [
+        #                 dbc.ModalHeader("Header"),
+        #                 dbc.ModalBody("This is the content of the modal"),
+        #                 dbc.ModalFooter(
+        #                     dbc.Button("Close", id="close", className="ml-auto")
+        #                 ),
+        #             ],
+        #             id="modal",
+        #         ),
+        #     ]
+        # ),
         html.Div(
             id='state-value',
             style={'display': 'none'},
@@ -75,15 +75,19 @@ app.layout = html.Div(
             ]
         ),
         html.Div(
+            style={'display':'flex'},
             children=[
                 html.Div(
                     children=[
-                    dcc.Graph(id='graph-with-dropdown')   
+                    dcc.Graph(
+                        id='graph-with-dropdown',
+                        style={'width':'50vw'},
+                        )   
                     ]
                 ),
                 html.Div(
                     id='tweet-list',
-                    style={'maxHeight':'50vh','overflowY':'scroll'},
+                    style={'width':'50vw','maxHeight':'50vh','overflowY':'scroll'},
                     children=[]
                 )
             ]
