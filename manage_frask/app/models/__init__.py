@@ -1,5 +1,6 @@
-from .models import User
+from .models import User,Tweet
 
 __all__ = [
-    User
+    User,
+    Tweet
 ]

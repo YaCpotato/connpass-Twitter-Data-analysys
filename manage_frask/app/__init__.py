@@ -9,7 +9,7 @@ from .main import main as main_blueprint
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('app.database_config.Config')
+    app.config.from_object('app.config.Config')
     initialize_database(app)
 
     login_manager = LoginManager()
