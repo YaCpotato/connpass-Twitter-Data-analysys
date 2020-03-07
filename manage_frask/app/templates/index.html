@@ -7,4 +7,32 @@
 <h2 class="subtitle">
     Easy authentication and authorization in Flask.
 </h2>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <a href="{{ url_for('main.event_manage') }}">
+                <div class="card" style="width: 18rem;">
+                    <img src="../static/images/benkyoukai_kunrenkou.png" style="width:auto;height:250px;" class="card-img-top" alt="勉強会のイラスト">
+                    <div class="card-body">
+                    <h5 class="card-title">イベント・勉強会の管理</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm">
+            <a href="{{ url_for('main.tweet_manage') }}">
+                <div class="card" style="width: 18rem;">
+                    <img src="../static/images/internet_buzz_tsubuyaki.png" style="width:auto;height:250px;" class="card-img-top" alt="バズったハチのイラスト">
+                    <div class="card-body">
+                    <h5 class="card-title">ツイートの管理</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm">
+        One of three columns
+        </div>
+    </div>
+</div>
+
 {% endblock %}
