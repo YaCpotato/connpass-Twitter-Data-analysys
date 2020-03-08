@@ -26,3 +26,9 @@ session = scoped_session(
 # 各modelで利用
 # classとDBをMapping
 Base = declarative_base()
+
+db = SQLAlchemy()
+
+
+def initialize_database(app):
+    db.init_app(app)

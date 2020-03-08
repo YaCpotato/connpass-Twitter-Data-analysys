@@ -1,16 +1,22 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.declarative import declarative_base
-import config
 from flask_sqlalchemy import SQLAlchemy
+
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 dialect = "mysql"
 driver = "mysqldb"
-username = config.MYSQL_USERNAME
-password = config.MYSQL_PASSWORD
+username = os.environ.get("MYSQL_USERNAME")
+password = os.environ.get("MYSQL_PASSWORD")
 host = "localhost"
 port = "3306"
-database = config.MYSQL_DATABASE_NAME
+database = os.environ.get("MYSQL_DATABASE_NAME")
 charset_type = "utf8mb4"
 db_url = f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}?charset={charset_type}"
 
