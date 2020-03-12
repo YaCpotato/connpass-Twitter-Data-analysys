@@ -55,3 +55,9 @@ class Event(db.Model):
     event_date = Column(Date, default=datetime.now, nullable=False)
     adstart_date = Column(DateTime, default=datetime.now, nullable=False)
     end_date = Column(DateTime, default=datetime.now, nullable=False)
+
+    def __init__(self, name, event_date, adstart_date, end_date):
+        self.name = name
+        self.event_date = event_date
+        self.adstart_date = adstart_date
+        self.end_date = end_date

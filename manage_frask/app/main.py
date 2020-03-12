@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template,request, abort, jsonify,flash,url_for,redirect
 from flask_login import current_user
 from app.models import Event
+from app.database import db
+
 
 main = Blueprint('main', __name__)
 
@@ -16,7 +18,7 @@ def profile():
 
 @main.route('/admin/event', methods=['GET'])
 def event_manage():
-    events = jsonify((Event.all()).to_dict())
+    events = Event.query.all()
     return render_template('event.html', events=events)
 
 @main.route('/admin/event/<int:event_id>', methods=['GET'])
@@ -33,7 +35,7 @@ def post_event():
     adstart_date = request.form.get('adstart_date')
     end_date = request.form.get('end_date')
 
-    event_by_name = User.query.filter_by(name=name).first()
+    event_by_name = Event.query.filter_by(name=name).first()
     if name:
         flash('イベント名が重複しています')
         return redirect(url_for('main.event_manage'))
