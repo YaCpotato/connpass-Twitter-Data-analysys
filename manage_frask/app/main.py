@@ -16,7 +16,8 @@ def profile():
 
 @main.route('/admin/event', methods=['GET'])
 def event_manage():
-    return render_template('event.html')
+    events = jsonify((Event.all()).to_dict())
+    return render_template('event.html', events=events)
 
 @main.route('/admin/event/<int:event_id>', methods=['GET'])
 def get_event(event_id=None):
@@ -25,7 +26,7 @@ def get_event(event_id=None):
     return jsonify(event.to_dict())
 
 
-@main.route('/events', methods=['POST'])
+@main.route('/admin/event', methods=['POST'])
 def post_event():
     name = request.form.get('event_name')
     event_date = request.form.get('event_date')
@@ -49,7 +50,7 @@ def post_event():
     return response, 201
 
 
-@main.route('/events/<event_id>', methods=['PUT'])
+@main.route('/admin/event/<event_id>', methods=['PUT'])
 def put_event(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if not event:
@@ -64,7 +65,7 @@ def put_event(event_id):
     return jsonify(event.to_dict())
 
 
-@main.route('/events/<event_id>', methods=['DELETE'])
+@main.route('/admin/event/<event_id>', methods=['DELETE'])
 def delete_event(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if not event:
