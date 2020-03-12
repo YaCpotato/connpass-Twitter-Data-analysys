@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, Integer, BigInteger, String, DateTime, Sequence
+from sqlalchemy import Column, Text, Integer, BigInteger, String, Date, DateTime, Sequence
 from app.database import db
 from datetime import datetime
 import sys
@@ -44,3 +44,14 @@ class Tweet(db.Model):
 	url_click = Column(Integer,nullable=True)
 	hashtag_click = Column(Integer,nullable=True)
 	detail_click = Column(Integer,nullable=True)
+
+class Event(db.Model):
+    """
+    EventModel
+    """
+    __tablename__ = 'events'
+    id = Column(BigInteger, primary_key=True)
+    name = Column(String(50, collation='utf8mb4_general_ci'), nullable=False)
+    event_date = Column(Date, default=datetime.now, nullable=False)
+    adstart_date = Column(DateTime, default=datetime.now, nullable=False)
+    end_date = Column(DateTime, default=datetime.now, nullable=False)
