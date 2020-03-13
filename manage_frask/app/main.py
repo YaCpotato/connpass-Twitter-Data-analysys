@@ -2,6 +2,7 @@ from flask import Blueprint, render_template,request, abort, jsonify,flash,url_f
 from flask_login import current_user
 from app.models import Event
 from app.database import db
+from datetime import datetime
 
 
 main = Blueprint('main', __name__)
@@ -31,21 +32,28 @@ def get_event(event_id=None):
 @main.route('/admin/event', methods=['POST'])
 def post_event():
     name = request.form.get('event_name')
-    event_date = request.form.get('event_date')
-    adstart_date = request.form.get('adstart_date')
-    end_date = request.form.get('end_date')
+    event_date = datetime.strptime(request.form.get('event_date'), '%Y-%m-%d')
+    adstart_date = datetime.strptime(request.form.get('adstart_date'), '%Y-%m-%d')
+    end_date = datetime.strptime(request.form.get('end_date'), '%Y-%m-%d')
 
     event_by_name = Event.query.filter_by(name=name).first()
-    if name:
+    if event_by_name:
         flash('イベント名が重複しています')
         return redirect(url_for('main.event_manage'))
 
     # レコードの登録 新規作成したオブジェクトをaddしてcommit
-    event = Event(name, event_date, adstart_date, end_date)
-    db.session.add(event)
-    db.session.commit()
+    event = Event(name=name, event_date=event_date, adstart_date=adstart_date, end_date=end_date)
 
-    response = jsonify(event.to_dict())
+    try:
+        db.session.add(event)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
+    finally:
+        db.session.close()
+    
+    response = jsonify(event)
     # レスポンスヘッダ設定
     response.headers['Location'] = '/api/events/%d' % event.id
     # HTTPステータスを200以外で返却したい場合
