@@ -49,6 +49,8 @@
                     <th>宣伝開始日</th>
                     <th>開催日</th>
                     <th>絞り込み終了日</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -59,6 +61,12 @@
                     <td>{{ event.adstart_date }}</td>
                     <td>{{ event.event_date }}</td>
                     <td>{{ event.end_date }}</td>
+                    <td>
+                        <button class="btn btn-success"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
