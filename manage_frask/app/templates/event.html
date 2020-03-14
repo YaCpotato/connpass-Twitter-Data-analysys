@@ -60,7 +60,7 @@
                     <td>{{ event.event_date }}</td>
                     <td>{{ event.end_date }}</td>
                     <td>
-                        <form action="{{ url_for('main.edit_event') }}" method="POST">
+                        <form action="{{ url_for('main.edit_event',event_id=event.id) }}" method="POST">
                             <input type="hidden" name="_method" value="PUT">
                             <button type="submit" class="btn btn-success"><i class="fas fa-edit"></i></button>
                         </form>

@@ -58,7 +58,15 @@ def post_event():
 
 
 @main.route('/admin/event/edit/<event_id>', methods=['POST'])
-def put_event(event_id):
+def edit_event(event_id):
+    event = Event.query.filter_by(id=event_id).first()
+    if not event:
+        abort(404, {'code': 'Not found', 'message': 'event not found'})
+
+    return render_template('event_edit.html', event=event)
+
+@main.route('/admin/event/update/<event_id>', methods=['POST'])
+def update_event(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if not event:
         abort(404, {'code': 'Not found', 'message': 'event not found'})
