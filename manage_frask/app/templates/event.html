@@ -2,10 +2,81 @@
 
 {% block content %}
 <h1 class="title">
-    Flask Login Example
+    イベント管理画面
 </h1>
 <h2 class="subtitle">
-    Easy authentication and authorization in Flask.
+    イベントの追加・編集・削除が行えます
 </h2>
+<div class="container">
+    <div class="option-area">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            新規作成
+        </button>
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">イベント新規作成</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('main.post_event') }}" method="POST">
+                            <input type="text" name="event_name">
+                            <input type="date" name="event_date">
+                            <input type="date" name="adstart_date">
+                            <input type="date" name="end_date">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="all-event-area">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>イベント名</th>
+                    <th>宣伝開始日</th>
+                    <th>開催日</th>
+                    <th>絞り込み終了日</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.adstart_date }}</td>
+                    <td>{{ event.event_date }}</td>
+                    <td>{{ event.end_date }}</td>
+                    <td>
+                        <form action="{{ url_for('main.edit_event',event_id=event.id) }}" method="POST">
+                            <input type="hidden" name="_method" value="PUT">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('main.delete_event',event_id=event.id) }}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 {% endblock %}
