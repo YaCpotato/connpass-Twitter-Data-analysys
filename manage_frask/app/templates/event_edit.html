@@ -8,10 +8,10 @@
 <div class="container">
     <form action="{{ url_for('main.update_event',event_id=event.id) }}" method="POST">
         <input type="hidden" name="_method" value="PUT">
-        <input type="text" name="event_name">{{ event.name }}</input>
-        <input type="date" name="event_date">{{ event.event_date }}</input>
-        <input type="date" name="adstart_date">{{ event.adstart_date }}</input>
-        <input type="date" name="end_date">{{ event.end_date }}</input>
+        <input type="text" name="event_name" value="{{ event.name }}">
+        <input type="date" name="event_date" value="{{ event.event_date }}">
+        <input type="date" name="adstart_date" value="{{ event.adstart_date }}">
+        <input type="date" name="end_date" value="{{ event.end_date }}">
         <button type="submit" class="btn btn-success">確定</button>
     </form>
 </div>
