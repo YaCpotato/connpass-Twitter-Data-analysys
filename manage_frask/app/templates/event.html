@@ -78,9 +78,9 @@
                                     </div>
                                     <div class="modal-body">
                                         {{ event.name }} を削除してよろしいですか？
-                                        <form action="{{ url_for('main.delete_event') }}" method="POST">
+                                        <form action="{{ url_for('main.delete_event',event_id=event.id) }}" method="POST">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-danger">Save</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
                                     </div>
                                     <div class="modal-footer">

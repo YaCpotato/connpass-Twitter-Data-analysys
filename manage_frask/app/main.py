@@ -29,7 +29,7 @@ def get_event(event_id=None):
     return jsonify(event.to_dict())
 
 
-@main.route('/admin/event', methods=['POST'])
+@main.route('/admin/event/add', methods=['POST'])
 def post_event():
     name = request.form.get('event_name')
     event_date = datetime.strptime(request.form.get('event_date'), '%Y-%m-%d')
@@ -38,7 +38,7 @@ def post_event():
 
     event_by_name = Event.query.filter_by(name=name).first()
     if event_by_name:
-        flash('イベント名が重複しています')
+        # flash('イベント名が重複しています')
         return redirect(url_for('main.event_manage'))
 
     # レコードの登録 新規作成したオブジェクトをaddしてcommit
@@ -53,14 +53,11 @@ def post_event():
     finally:
         db.session.close()
     
-    response = jsonify(event)
-    # レスポンスヘッダ設定
-    response.headers['Location'] = '/api/events/%d' % event.id
-    # HTTPステータスを200以外で返却したい場合
-    return response, 201
+    # flash('%sを作成しました' % name)
+    return redirect(url_for('main.event_manage'))
 
 
-@main.route('/admin/event/<event_id>', methods=['PUT'])
+@main.route('/admin/event/edit/<event_id>', methods=['POST'])
 def put_event(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if not event:
@@ -72,10 +69,10 @@ def put_event(event_id):
     event.end_date = request.form.get('end_date')
     db.session.commit()
 
-    return jsonify(event.to_dict())
+    return redirect(url_for('main.event_manage'))
 
 
-@main.route('/admin/event/<event_id>', methods=['DELETE'])
+@main.route('/admin/event/delete/<event_id>', methods=['POST'])
 def delete_event(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if not event:
@@ -84,7 +81,7 @@ def delete_event(event_id):
     db.session.delete(event)
     db.session.commit()
 
-    return jsonify(None), 204
+    return redirect(url_for('main.event_manage'))
 
 @main.route('/admin/tweet')
 def tweet_manage():
